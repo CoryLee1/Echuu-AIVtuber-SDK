@@ -1,0 +1,93 @@
+{
+  "character": {
+    "name": "Luna",
+    "persona": "Energetic content creator, loves dancing and sharing life",
+    "background": "Social media influencer, posts dance videos regularly"
+  },
+  "topic": "Complaining about platform algorithm limiting my dance video because of weird camera angle",
+  "language": "en",
+  "script": [
+    {
+      "step": 1,
+      "stage": "Hook",
+      "speech": "Oh I just remembered something... 我刚才调摄像头的时候突然想起，之前我有个舞蹈视频被限流了，就因为摄像头角度问题。我到现在都想不明白，明明是正常的舞步，为什么算法就觉得有问题呢？",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": []
+    },
+    {
+      "step": 2,
+      "stage": "Build-up",
+      "speech": "那天我发了个新编的舞，就是很普通的pop dance，但是我把摄像头放低了一点，想拍个仰视角度显腿长嘛。结果第二天一看，播放量才平时的十分之一，我当时就懵了。",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": []
+    },
+    {
+      "step": 3,
+      "stage": "Build-up",
+      "speech": "我那时候真的是...诶等等，那首歌叫什么来着？好像是Doja Cat的...算了不重要。总之我当时心态就崩了，我就想这到底怎么回事啊？我又没露什么，就是正常跳舞啊。",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": [
+        "思路中断",
+        "跑题细节"
+      ]
+    },
+    {
+      "step": 4,
+      "stage": "Build-up",
+      "speech": "不对我要说的是...后来我去看数据后台，发现被标记成'疑似不当内容'，我人都傻了。我就一个劲地申诉，客服回复说'算法检测到不当镜头角度'。什么叫不当镜头角度啊？我就是想显高一点而已！",
+      "action": "continue",
+      "emotion_break": "frustrated",
+      "disfluencies": [
+        "词语重复"
+      ]
+    },
+    {
+      "step": 5,
+      "stage": "Climax",
+      "speech": "我当时气得不行，然后做了个特别幼稚的事情。我重新录了一遍，这次把摄像头放得特别高，然后配文'这样算法满意了吗？'结果你猜怎么着？这条居然爆了，点赞比原来那条高十倍。",
+      "action": "continue",
+      "emotion_break": "ironic",
+      "disfluencies": []
+    },
+    {
+      "step": 6,
+      "stage": "Climax",
+      "speech": "我现在想起来都觉得好笑，当时我还在那里愤愤不平地剪视频，嘴里嘟囔着'什么破算法'，手都在发抖。我妈从我房间门口路过还问我怎么了，我就跟她解释这个事，她听完就笑我说'你这孩子...'",
+      "action": "continue",
+      "emotion_break": "embarrassed",
+      "disfluencies": [
+        "跑题细节"
+      ]
+    },
+    {
+      "step": 7,
+      "stage": "Resolution",
+      "speech": "但是说真的，这件事让我意识到平台算法有多奇葩。我现在每次录视频都要想一下摄像头角度，不敢太高也不敢太低，就像在走钢丝一样。有时候我觉得创作者真的挺可怜的，要迎合这些莫名其妙的规则。",
+      "action": "continue",
+      "emotion_break": "helpless",
+      "disfluencies": []
+    },
+    {
+      "step": 8,
+      "stage": "Resolution",
+      "speech": "现在我每次看到其他博主抱怨被限流...说到我同学，我同学这个人人特别好，有一次借我钱从来不催...算了这个以后再说，反正就是这么个人，我继续说Complaining about platform algorithm limiting my dance video because of weird camera angle，我都特别能理解那种心情。就是明明什么都没做错，但就是被误判了。诶，我突然想起来，那个申诉我到现在都没收到回复，都过去两个月了吧...",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": [
+        "数字模糊",
+        "思路中断"
+      ]
+    },
+    {
+      "step": 9,
+      "stage": "Resolution",
+      "speech": "算了算了，不想这些烦心事了。反正现在我都学会了，摄像头就放中间高度，中规中矩，虽然不够artistic但至少安全。有时候想想也挺讽刺的，为了不被误判，我们都变得小心翼翼的。yeah that's basically it",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": []
+    }
+  ]
+}

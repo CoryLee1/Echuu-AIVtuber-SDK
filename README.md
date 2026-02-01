@@ -46,6 +46,81 @@ for step in engine.run(max_steps=15, play_audio=False, save_audio=True):
         print(f"  💭 {step['inner_monologue']}")
 ```
 
+## 📚 输出案例
+
+我们提供了三个不同语言和主题的完整案例，展示 ECHUU 的生成效果：
+
+### 案例 1: 中文 - 食堂打饭遇到的有趣故事
+
+**角色**: 小梅 - 温柔治愈型，喜欢分享生活细节  
+**话题**: 食堂打饭遇到的有趣故事  
+**文件**: [`output/examples/example_chinese_canteen.json`](output/examples/example_chinese_canteen.json)
+
+**示例片段**:
+```
+[Step 1] Hook
+诶我突然想起来一个事，刚才看弹幕有人说红烧肉，我就想起大学食堂...
+我跟你们说，我有个同学啊，她每天中午都要排队二十分钟就为了吃到
+阿姨打的红烧肉，但是她有个特别奇怪的习惯...
+
+[Step 5] Climax
+诶我说到哪了？对，原来啊，她爸爸就是我们学校后勤部门的，负责食堂
+管理的！阿姨们都认识她爸爸，所以对她特别好。但是她从来没跟我们说
+过这个事，我们还以为她就是单纯礼貌呢
+```
+
+### 案例 2: 日语 - 秋叶原买谷遇到同好
+
+**角色**: さくら - オタク系VTuber、アニメとゲームが大好き  
+**话题**: 秋葉原でグッズを買いに行ったら同好の士に出会った話  
+**文件**: [`output/examples/example_japanese_akihabara.json`](output/examples/example_japanese_akihabara.json)
+
+**示例片段**:
+```
+[Step 1] Hook
+不知道为什么我突然想起以前的一个事，刚才看弹幕有人说想去秋叶原，
+我就想起那次...那是什么时候来着，今年春天？还是去年？反正挺暖和的，
+我排队买那个限定的亚丝娜手办，animate门口排了好长的队
+
+[Step 4] Climax
+结果她问我平时看哪个V，我就...就说了几个别的V的名字，没敢说我自己，
+然后她说她最近在看一个叫さくら的VTuber，超可爱的，声音很治愈。
+我当时整个人都僵住了...
+```
+
+### 案例 3: 英文 - 跳舞视频被平台限流抱怨
+
+**角色**: Luna - Energetic content creator, loves dancing and sharing life  
+**话题**: Complaining about platform algorithm limiting my dance video because of weird camera angle  
+**文件**: [`output/examples/example_english_dance_video.json`](output/examples/example_english_dance_video.json)
+
+**示例片段**:
+```
+[Step 1] Hook
+Oh I just remembered something... 我刚才调摄像头的时候突然想起，之前
+我有个舞蹈视频被限流了，就因为摄像头角度问题。我到现在都想不明白，
+明明是正常的舞步，为什么算法就觉得有问题...
+
+[Step 5] Climax
+我当时气得不行，然后做了个特别幼稚的事情。我重新录了一遍，这次把
+摄像头放得特别高，然后配文'这样算法满意了吗？'结果你猜怎么着？这条
+居然爆了，点赞比原来那条高十倍。
+```
+
+### 查看完整案例
+
+所有案例文件位于 `output/examples/` 目录，包含完整的：
+- 角色信息
+- 话题和语言设置
+- 完整的剧本（包含所有步骤）
+- 情绪断点和认知特征
+- 记忆状态快照
+
+```bash
+# 查看案例文件
+cat output/examples/example_chinese_canteen.json
+```
+
 ## 架构概览
 
 Echuu 采用模块化设计，主要分为三个层次：
@@ -452,16 +527,24 @@ for step in engine.run(max_steps=15, save_audio=True):
         print(f"💭 承诺: {memory['promises']}")
 ```
 
+## 📖 更多示例
+
+查看 `output/examples/` 目录获取更多完整案例：
+- 中文案例：食堂打饭的有趣故事
+- 日语案例：秋叶原买谷遇到同好
+- 英文案例：跳舞视频被平台限流抱怨
+
+每个案例都包含完整的角色设置、剧本生成过程和输出结果。
+
 ## 贡献
 
 欢迎提交 Issue 和 Pull Request！
 
 ## 许可证
 
-MIT License
+Apache-2.0 License
 
-## 相关文档
+## 相关链接
 
-- [项目主 README](../README.md)
-- [Web 控制台 README](../echuu-web/backend/README.md)
-- [Qwen TTS 音色列表](../docs/qwen_tts_voices.md)
+- **GitHub 仓库**: https://github.com/CoryLee1/Echuu-AIVtuber-SDK
+- **安装**: `pip install git+https://github.com/CoryLee1/Echuu-AIVtuber-SDK.git`

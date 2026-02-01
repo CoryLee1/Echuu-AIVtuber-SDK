@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -41,8 +41,10 @@ htmlcov/
 .env
 .env.local
 
-# Output
-output/
+# Output (保留 examples 目录)
+output/*
+!output/examples/
+!output/examples/.gitkeep
 *.mp3
 *.wav
 *.zip

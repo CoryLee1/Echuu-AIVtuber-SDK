@@ -1,0 +1,105 @@
+{
+  "character": {
+    "name": "さくら",
+    "persona": "オタク系VTuber、アニメとゲームが大好き",
+    "background": "秋葉原によく行く、コレクション好き"
+  },
+  "topic": "秋葉原でグッズを買いに行ったら同好の士に出会った話",
+  "language": "ja",
+  "script": [
+    {
+      "step": 1,
+      "stage": "Hook",
+      "speech": "不知道为什么我突然想起以前的一个事，刚才看弹幕有人说想去秋叶原，我就想起那次...那是什么时候来着，今年春天？还是去年？反正挺暖和的，我排队买那个限定的亚丝娜手办，animate门口排了好长的队",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": [
+        "数字模糊",
+        "自我修正"
+      ]
+    },
+    {
+      "step": 2,
+      "stage": "Build-up",
+      "speech": "我前面站了个小姐姐，戴着眼镜很可爱的那种，一开始我们都没说话就各自玩手机，然后她突然转过来问我是不是也买亚丝娜的，我说是啊，她就眼睛亮了，说她也超喜欢这个角色",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": []
+    },
+    {
+      "step": 3,
+      "stage": "Build-up",
+      "speech": "然后我们就开始聊，从SAO聊到各种动漫，什么Re:Zero啊、进击的巨人啊...诶等等，我记得那天还很冷来着，我穿了厚外套...不对，刚才不是说暖和吗？算了不重要，反正我们聊得特别投机，排队都不觉得无聊了",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": [
+        "思路中断",
+        "自我修正"
+      ]
+    },
+    {
+      "step": 4,
+      "stage": "Build-up",
+      "speech": "她说她也是VTuber粉丝！我当时心里就想完蛋了，万一她认出我怎么办？但又觉得...诶，如果被粉丝认出来会不会很尴尬啊？我当时没化妆就戴了个口罩，应该认不出来吧？心跳得特别快，手心都出汗了",
+      "action": "continue",
+      "emotion_break": "内心独白",
+      "disfluencies": [
+        "思路中断"
+      ]
+    },
+    {
+      "step": 5,
+      "stage": "Climax",
+      "speech": "结果她问我平时看哪个V，我就...就说了几个别的V的名字，没敢说我自己，然后她说她最近在看一个叫さくら的VTuber，超可爱的，声音很治愈。我当时整个人都僵住了...那时候我住市中心那边，就是那个楼下有便利店的，楼下每天早上六点就有人在叫卖，租金多少来着...一千出头吧？反正对我来说就是天价...对说回秋葉原でグッズを買いに行ったら同好の士に出会った話，脸肯定红了，还好戴着口罩",
+      "action": "continue",
+      "emotion_break": "身体记忆",
+      "disfluencies": [
+        "词语重复"
+      ]
+    },
+    {
+      "step": 6,
+      "stage": "Climax",
+      "speech": "诶我说到哪了？对，她还说那个さくら的声音特别温柔，每次听都觉得很治愈，是她最喜欢的V之一。我...我真的不知道该说什么，就嗯嗯地点头，心里又开心又紧张，开心是因为被夸了，紧张是怕露馅",
+      "action": "continue",
+      "emotion_break": "笨拙失控",
+      "disfluencies": [
+        "词语重复"
+      ]
+    },
+    {
+      "step": 7,
+      "stage": "Climax",
+      "speech": "最搞笑的是，她问我觉得那个さくら怎么样，我脑子一热就说'她...她人应该很好吧'，声音都有点颤抖了。她就笑着说'对啊对啊，感觉就是那种很温柔的女孩子呢'，我差点想说谢谢你",
+      "action": "continue",
+      "emotion_break": "笨拙失控",
+      "disfluencies": [
+        "词语重复"
+      ]
+    },
+    {
+      "step": 8,
+      "stage": "Resolution",
+      "speech": "等等，我刚想说什么...算了，买完手办我们还一起去了趟书店，她买了好多本漫画，我也跟着买了几本...其实有几本我已经有了，但不知道为什么就想和她一起买。现在想想那时候的自己真的好傻",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": []
+    },
+    {
+      "step": 9,
+      "stage": "Resolution",
+      "speech": "最后分别的时候她还说希望能再遇到，我当时想说其实你每天都能见到我的，但又不敢说。回家路上我一直在想，如果她知道我就是她喜欢的那个V会是什么反应呢？",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": []
+    },
+    {
+      "step": 10,
+      "stage": "Resolution",
+      "speech": "所以...谢谢你们一直支持我，虽然我们可能永远不会在现实中相遇，但能通过直播和大家交流，我觉得就已经很幸福了。好了不说了，我看超级聊天有人问别的事.anyway, let me check chat real quick...",
+      "action": "continue",
+      "emotion_break": null,
+      "disfluencies": []
+    }
+  ]
+}
