@@ -110,15 +110,71 @@ Oh I just remembered something... 我刚才调摄像头的时候突然想起，�
 ### 查看完整案例
 
 所有案例文件位于 `output/examples/` 目录，包含完整的：
-- 角色信息
-- 话题和语言设置
-- 完整的剧本（包含所有步骤）
-- 情绪断点和认知特征
-- 记忆状态快照
+- ✅ 角色信息（名称、人设、背景）
+- ✅ 话题和语言设置
+- ✅ 完整的剧本（包含所有步骤）
+- ✅ 情绪断点和认知特征
+- ✅ 记忆状态快照
 
 ```bash
 # 查看案例文件
 cat output/examples/example_chinese_canteen.json
+
+# 或在 Python 中加载
+import json
+with open("output/examples/example_chinese_canteen.json", "r", encoding="utf-8") as f:
+    example = json.load(f)
+    for step in example["script"]:
+        print(f"[{step['stage']}] {step['speech']}")
+```
+
+### 生成自己的案例
+
+如果你想生成自己的案例，可以使用提供的脚本：
+
+```bash
+# 运行示例生成脚本
+python scripts/generate_examples.py
+```
+
+或者修改脚本中的配置来生成自定义案例：
+
+```python
+from echuu import EchuuLiveEngine
+import json
+
+engine = EchuuLiveEngine()
+engine.setup(
+    name="你的角色名",
+    persona="角色人设",
+    topic="你的话题",
+    background="角色背景",
+    language="zh"  # 或 "ja", "en"
+)
+
+results = []
+for step in engine.run(max_steps=10, play_audio=False, save_audio=False):
+    results.append({
+        "step": step.get("step", 0),
+        "stage": step.get("stage", ""),
+        "speech": step.get("speech", ""),
+        "action": step.get("action", "continue"),
+        "emotion_break": step.get("emotion_break"),
+        "disfluencies": step.get("disfluencies", []),
+    })
+
+# 保存结果
+with open("my_example.json", "w", encoding="utf-8") as f:
+    json.dump({
+        "character": {
+            "name": "你的角色名",
+            "persona": "角色人设",
+            "background": "角色背景",
+        },
+        "topic": "你的话题",
+        "language": "zh",
+        "script": results,
+    }, f, ensure_ascii=False, indent=2)
 ```
 
 ## 架构概览
