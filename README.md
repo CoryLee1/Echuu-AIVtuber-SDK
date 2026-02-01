@@ -858,6 +858,213 @@ ScriptLineV4(
 - `blink`: 根据标点符号调整（感叹号→hold，省略号→auto）
 - `beat/pause`: 根据阶段和标点添加节拍/暂停提示
 
+## 📤 SDK 输出接口参考
+
+供后端工程师对接使用的完整接口文档。
+
+### 1. `engine.run()` 每步输出 (Step Result)
+
+调用 `engine.run()` 时，每个 yield 返回的字典包含以下字段：
+
+| 字段 | 类型 | 说明 | 示例 |
+|------|------|------|------|
+| `speech` | `string` | 当前台词文本 | `"诶，你们知道吗..."` |
+| `stage` | `string` | 叙事阶段 | `"Hook"`, `"Build-up"`, `"Climax"`, `"Resolution"` |
+| `step` | `int` | 当前步骤索引 | `0`, `1`, `2`, ... |
+| `action` | `string` | 执行动作类型 | `"continue"`, `"tease"`, `"jump"`, `"improvise"`, `"end"` |
+| `line_idx` | `int` | 剧本行索引 | `0`, `1`, `2`, ... |
+| `audio` | `bytes \| None` | TTS 音频二进制数据 | `b'\xff\xfb\x90...'` |
+| `audio_url` | `string \| None` | 音频文件 URL（Web 模式） | `"/audio/session_123/step_0.mp3"` |
+| `danmaku` | `string \| None` | 触发的弹幕文本 | `"为什么被开除？"` |
+| `priority` | `float` | 弹幕优先级 (0-1) | `0.8` |
+| `cost` | `float` | 打断代价 (0-1) | `0.5` |
+| `relevance` | `float` | 弹幕相关度 (0-1) | `0.7` |
+| `disfluencies` | `list[string]` | 认知特征标记 | `["数字模糊", "自我修正"]` |
+| `emotion_break` | `dict \| None` | 情绪断点 | `{"level": 2, "trigger": "回忆"}` |
+| `cue` | `dict \| None` | 表演标注 (PerformerCue) | 见下表 |
+| `memory_snapshot` | `dict` | 记忆状态快照 | 见下表 |
+
+### 2. PerformerCue 结构
+
+`step["cue"]` 包含以下字段，用于驱动 VRM 虚拟形象：
+
+| 字段 | 类型 | 说明 | 示例 |
+|------|------|------|------|
+| `emotion` | `EmotionCue \| None` | 表情标注 | 见下表 |
+| `gesture` | `GestureCue \| None` | 动作标注 | 见下表 |
+| `look` | `LookCue \| None` | 视线标注 | 见下表 |
+| `blink` | `BlinkCue \| None` | 眨眼标注 | 见下表 |
+| `lipsync` | `LipsyncCue \| None` | 口型标注（预留） | 见下表 |
+| `camera` | `CameraCue \| None` | 镜头标注（可选） | 见下表 |
+| `beat` | `float \| None` | 节拍点（秒） | `0.5` |
+| `pause` | `float \| None` | 暂停时长（秒） | `0.3` |
+
+#### 2.1 EmotionCue
+
+| 字段 | 类型 | 说明 | 取值范围 |
+|------|------|------|----------|
+| `key` | `string` | 表情类型 | `"neutral"`, `"happy"`, `"angry"`, `"sad"`, `"relaxed"`, `"surprised"` |
+| `intensity` | `float` | 强度 | `0.0 ~ 1.0` |
+| `attack` | `float` | 淡入时间（秒） | `0.0 ~ 1.0` |
+| `release` | `float` | 淡出时间（秒） | `0.0 ~ 1.0` |
+
+#### 2.2 GestureCue
+
+| 字段 | 类型 | 说明 | 取值范围 |
+|------|------|------|----------|
+| `clip` | `string` | 动作预设名 | 见下方预设列表 |
+| `weight` | `float` | 权重 | `0.0 ~ 1.0` |
+| `duration` | `float` | 持续时间（秒） | `> 0` |
+| `loop` | `bool` | 是否循环 | `true`, `false` |
+
+**可用动作预设 (18个)**:
+
+| 分类 | 预设名称 | 描述 |
+|------|----------|------|
+| IDLE | `idle_breathe` | 平静呼吸 |
+| IDLE | `idle_sway` | 轻微摇晃 |
+| IDLE | `idle_look_around` | 环顾四周 |
+| TALK | `talk_gesture_small` | 小幅度手势 |
+| TALK | `talk_gesture_medium` | 中等手势 |
+| TALK | `talk_gesture_big` | 大幅度手势 |
+| TALK | `talk_point` | 指点手势 |
+| EMOTE | `emote_nod` | 点头 |
+| EMOTE | `emote_shake_head` | 摇头 |
+| EMOTE | `emote_tilt_head` | 歪头 |
+| EMOTE | `emote_shrug` | 耸肩 |
+| REACT | `react_surprised` | 惊讶反应 |
+| REACT | `react_laugh` | 大笑 |
+| REACT | `react_think` | 思考 |
+| REACT | `react_facepalm` | 捂脸 |
+| POSE | `pose_confident` | 自信姿势 |
+| POSE | `pose_shy` | 害羞姿势 |
+| POSE | `pose_angry` | 生气姿势 |
+
+#### 2.3 LookCue
+
+| 字段 | 类型 | 说明 | 取值范围 |
+|------|------|------|----------|
+| `target` | `string \| [float, float]` | 视线目标 | `"camera"`, `"chat"`, `"offscreen"`, `"down"`, `"up"`, `"left"`, `"right"` 或 `[x, y]` 坐标 |
+| `strength` | `float` | 强度 | `0.0 ~ 1.0` |
+
+#### 2.4 BlinkCue
+
+| 字段 | 类型 | 说明 | 取值范围 |
+|------|------|------|----------|
+| `mode` | `string` | 眨眼模式 | `"auto"`, `"hold"`, `"none"`, `"wink_left"`, `"wink_right"` |
+| `extra` | `float` | 额外眨眼频率调整 | `0.0 ~ 1.0` |
+
+#### 2.5 LipsyncCue（预留，由音频驱动）
+
+| 字段 | 类型 | 说明 | 取值范围 |
+|------|------|------|----------|
+| `enabled` | `bool` | 是否启用 | `true`, `false` |
+| `aa` | `float` | 口型 A | `0.0 ~ 1.0` |
+| `ih` | `float` | 口型 I | `0.0 ~ 1.0` |
+| `ou` | `float` | 口型 U | `0.0 ~ 1.0` |
+| `ee` | `float` | 口型 E | `0.0 ~ 1.0` |
+| `oh` | `float` | 口型 O | `0.0 ~ 1.0` |
+
+#### 2.6 CameraCue（可选）
+
+| 字段 | 类型 | 说明 | 示例 |
+|------|------|------|------|
+| `preset` | `string \| None` | 镜头预设 | `"closeup"`, `"medium"`, `"wide"` |
+| `zoom` | `float \| None` | 缩放比例 | `1.0`, `1.5`, `2.0` |
+
+### 3. MemorySnapshot 结构
+
+`step["memory_snapshot"]` 包含记忆状态：
+
+| 字段 | 类型 | 说明 | 示例 |
+|------|------|------|------|
+| `story_points` | `list[string]` | 已提及的剧情点 | `["上司PUA", "被开除"]` |
+| `promises` | `list[dict]` | 未兑现的承诺 | `[{"content": "下次详细说"}]` |
+| `emotion_trend` | `list[int]` | 最近5步情绪强度 | `[0, 1, 2, 3, 2]` |
+
+### 4. VRM 控制指令
+
+使用 `VRMExpressionMapper` 转换为前端指令：
+
+```python
+from echuu import VRMExpressionMapper, VRMVersion, EmotionKey
+
+mapper = VRMExpressionMapper(version=VRMVersion.VRM1)
+cmd = mapper.to_vrm_command(EmotionKey.HAPPY, intensity=0.9)
+```
+
+**输出格式**:
+
+| 字段 | 类型 | 说明 | 示例 |
+|------|------|------|------|
+| `type` | `string` | 指令类型 | `"expression"` |
+| `blendShape` | `string` | BlendShape 名称 | `"happy"` (VRM1) / `"Joy"` (VRM0) |
+| `weight` | `float` | 权重 | `0.9` |
+| `fadeIn` | `float` | 淡入时间（秒） | `0.2` |
+| `fadeOut` | `float` | 淡出时间（秒） | `0.3` |
+| `version` | `string` | VRM 版本 | `"vrm0"`, `"vrm1"` |
+
+### 5. 完整输出示例
+
+```json
+{
+  "speech": "他被公司开除了！哈哈哈哈！太解气了！",
+  "stage": "Climax",
+  "step": 2,
+  "action": "continue",
+  "line_idx": 2,
+  "audio_url": "/audio/session_abc/step_2.mp3",
+  "danmaku": null,
+  "disfluencies": [],
+  "emotion_break": {"level": 3, "trigger": "积压的不满释放"},
+  "cue": {
+    "emotion": {
+      "key": "happy",
+      "intensity": 1.0,
+      "attack": 0.15,
+      "release": 0.25
+    },
+    "gesture": {
+      "clip": "react_laugh",
+      "weight": 1.0,
+      "duration": 1.5,
+      "loop": false
+    },
+    "look": {
+      "target": "camera",
+      "strength": 0.9
+    },
+    "blink": {
+      "mode": "hold",
+      "extra": 0.0
+    },
+    "lipsync": {
+      "enabled": true,
+      "aa": 0.0, "ih": 0.0, "ou": 0.0, "ee": 0.0, "oh": 0.0
+    },
+    "beat": 0.5,
+    "pause": null
+  },
+  "memory_snapshot": {
+    "story_points": ["前上司PUA", "被开除"],
+    "promises": [],
+    "emotion_trend": [0, 1, 3]
+  }
+}
+```
+
+### 6. WebSocket 事件类型（Web 模式）
+
+后端通过 WebSocket 推送以下事件：
+
+| type | 说明 | data |
+|------|------|------|
+| `reasoning` | 推理过程 | `{"content": "Phase 1: 生成故事内核..."}` |
+| `ready` | 剧本生成完成 | `{"session_id": "xxx", "content": "剧本已生成"}` |
+| `step` | 每步执行结果 | 完整 Step Result 对象 |
+| `finish` | 表演结束 | `{"session_id": "xxx", "content": "表演结束"}` |
+| `error` | 错误 | `{"content": "错误信息"}` |
+
 ## 配置
 
 ### 环境变量
