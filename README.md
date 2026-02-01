@@ -288,6 +288,87 @@ amplifier = DramaAmplifier()
 amplified = amplifier.amplify(script_line, intensity=0.8)
 ```
 
+#### PerformerCue - 表演标注协议
+
+为每行台词提供可执行的表情与动作标注，供 Unity/three-vrm 等前端消费。
+
+```python
+from echuu import (
+    PerformerCue, EmotionCue, GestureCue, LookCue,
+    EmotionKey, LookTarget, BlinkMode,
+    infer_emotion_from_text,
+)
+
+# 从文本自动推断表情
+emotion = infer_emotion_from_text("太开心了！")
+# -> EmotionCue(key=HAPPY, intensity=0.95)
+
+# 创建完整的表演标注
+cue = PerformerCue(
+    emotion=EmotionCue(key=EmotionKey.HAPPY, intensity=0.8),
+    gesture=GestureCue(clip="react_laugh", duration=1.5),
+    look=LookCue(target=LookTarget.CAMERA, strength=0.8),
+)
+
+# 序列化为 JSON
+print(cue.to_json())
+```
+
+**表情枚举 (EmotionKey)**:
+- `NEUTRAL`, `HAPPY`, `ANGRY`, `SAD`, `RELAXED`, `SURPRISED`
+
+**视线目标 (LookTarget)**:
+- `CAMERA`, `CHAT`, `OFFSCREEN`, `DOWN`, `UP`, `LEFT`, `RIGHT`
+
+**眨眼模式 (BlinkMode)**:
+- `AUTO`, `HOLD`, `NONE`, `WINK_LEFT`, `WINK_RIGHT`
+
+### VRM 模块 (`echuu.vrm`)
+
+#### VRMExpressionMapper - VRM 表情映射器
+
+将 canonical 表情枚举转换为 VRM0/VRM1 格式的 BlendShape 指令。
+
+```python
+from echuu import VRMExpressionMapper, VRMVersion, EmotionKey
+
+# 创建 VRM1 映射器
+mapper = VRMExpressionMapper(version=VRMVersion.VRM1)
+
+# 生成 VRM 控制指令
+cmd = mapper.to_vrm_command(EmotionKey.HAPPY, intensity=0.9)
+# -> {
+#   "type": "expression",
+#   "blendShape": "happy",
+#   "weight": 0.9,
+#   "fadeIn": 0.2,
+#   "fadeOut": 0.3,
+#   "version": "vrm1"
+# }
+```
+
+#### GESTURE_PRESETS - 动作预设库
+
+提供 18 个常用手势/动作预设：
+
+```python
+from echuu import GESTURE_PRESETS, get_gesture_by_emotion, GestureCategory
+
+# 查看所有预设
+print(f"Total presets: {len(GESTURE_PRESETS)}")
+
+# 根据情绪获取匹配的动作
+gesture = get_gesture_by_emotion("happy")
+print(f"Gesture: {gesture.name} - {gesture.description}")
+```
+
+**动作分类 (GestureCategory)**:
+- `IDLE`: 待机动作 (idle_breathe, idle_sway, idle_look_around)
+- `TALK`: 说话动作 (talk_gesture_small/medium/big, talk_point)
+- `EMOTE`: 表情动作 (emote_nod, emote_shake_head, emote_tilt_head, emote_shrug)
+- `REACT`: 反应动作 (react_surprised, react_laugh, react_think, react_facepalm)
+- `POSE`: 姿势动作 (pose_confident, pose_shy, pose_angry)
+
 ### Generators 模块 (`echuu.generators`)
 
 #### ScriptGeneratorV4 - 剧本生成器
@@ -500,9 +581,23 @@ ScriptLineV4(
     stage="Hook",
     interruption_cost=0.3,
     key_info=["上司的八卦"],
-    emotion_config={"primary": "兴奋", "intensity": 0.7}
+    emotion_config={"primary": "兴奋", "intensity": 0.7},
+    # 新增：表演标注（自动生成）
+    cue=PerformerCue(
+        emotion=EmotionCue(key=EmotionKey.HAPPY, intensity=0.85),
+        gesture=GestureCue(clip="react_surprised", duration=0.8),
+        look=LookCue(target=LookTarget.CAMERA, strength=0.8),
+        blink=BlinkCue(mode=BlinkMode.HOLD),
+    )
 )
 ```
+
+**PerformerCue 自动生成**:
+- `emotion`: 根据文本关键词推断（开心、生气、难过等）
+- `gesture`: 根据叙事阶段和情绪匹配预设动作
+- `look`: 根据上下文确定视线目标（camera/chat/down）
+- `blink`: 根据标点符号调整（感叹号→hold，省略号→auto）
+- `beat/pause`: 根据阶段和标点添加节拍/暂停提示
 
 ## 配置
 
@@ -570,17 +665,25 @@ engine.setup(
 # 运行
 for step in engine.run(max_steps=15, save_audio=True):
     print(f"\n[{step['stage']}] {step['speech']}")
-    
+
     if step.get('inner_monologue'):
         print(f"💭 {step['inner_monologue']}")
-    
+
     if step.get('audio_url'):
         print(f"🎵 音频: {step['audio_url']}")
-    
+
     if step.get('memory_snapshot'):
         memory = step['memory_snapshot']
         print(f"📝 剧情点: {memory['story_points']}")
         print(f"💭 承诺: {memory['promises']}")
+
+    # 新增：获取表演标注
+    if step.get('cue'):
+        cue = step['cue']
+        if cue.get('emotion'):
+            print(f"🎭 表情: {cue['emotion']['key']} ({cue['emotion']['intensity']*100:.0f}%)")
+        if cue.get('gesture'):
+            print(f"✋ 动作: {cue['gesture']['clip']}")
 ```
 
 ## 📖 更多示例
