@@ -2,6 +2,25 @@
 
 一个用于生成自然、即兴感的直播内容的 Python 库，通过从真实主播切片中学习表演模式。
 
+## 🤖 使用的 AI 模型
+
+| 功能 | 模型 | 提供商 | 用途 |
+|------|------|--------|------|
+| **剧本生成** | Claude Sonnet 4 | Anthropic | 生成自然口语化的直播剧本 |
+| **语音合成** | Qwen3 TTS Flash Realtime | 阿里云百炼 | 实时语音合成，支持多种音色 |
+
+### 🔑 需要的 API Key
+
+1. **Anthropic API Key** (用于 LLM 剧本生成)
+   - 获取地址: https://console.anthropic.com/
+   - 环境变量: `ANTHROPIC_API_KEY`
+
+2. **阿里云百炼 API Key** (用于 TTS 语音合成)
+   - 获取地址: https://bailian.console.aliyun.com/?tab=model#/api-key
+   - 环境变量: `DASHSCOPE_API_KEY`
+
+> 💡 也支持 OpenAI GPT-4o 或通义千问作为 LLM，详见 `.env.example`
+
 ## 概述
 
 Echuu 是一个完整的 AI VTuber 自动直播系统，核心目标是生成**自然、即兴、有真实感**的直播内容。系统通过分析真实主播的表演模式，学习注意力转移、话语行为、故事结构等规律，并生成具有相似自然度的内容。
@@ -354,6 +373,7 @@ Oh I just remembered something... 我刚才调摄像头的时候突然想起，�
 - ✅ 完整的剧本（包含所有步骤）
 - ✅ 情绪断点和认知特征
 - ✅ 记忆状态快照
+- 🎵 **音频示例**: `example_chinese_cat_audio.mp3` (TTS 合成效果)
 
 ```bash
 # 查看案例文件
