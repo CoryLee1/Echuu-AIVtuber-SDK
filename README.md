@@ -6,20 +6,88 @@
 
 | 功能 | 模型 | 提供商 | 用途 |
 |------|------|--------|------|
-| **剧本生成** | Claude Sonnet 4 | Anthropic | 生成自然口语化的直播剧本 |
+| **剧本生成** | Gemini 3 Flash/Pro | Google | 生成自然口语化的直播剧本（推荐） |
+| **剧本生成** | Claude Sonnet 4 | Anthropic | 备选：高质量剧本生成 |
 | **语音合成** | Qwen3 TTS Flash Realtime | 阿里云百炼 | 实时语音合成，支持多种音色 |
 
 ### 🔑 需要的 API Key
 
-1. **Anthropic API Key** (用于 LLM 剧本生成)
-   - 获取地址: https://console.anthropic.com/
-   - 环境变量: `ANTHROPIC_API_KEY`
+#### 推荐配置（使用 Gemini 3）
+
+1. **Google Gemini API Key** (用于 LLM 剧本生成)
+   - 获取地址: https://aistudio.google.com/apikey
+   - 环境变量: `GEMINI_API_KEY`
+   - 推荐模型: `gemini-3-flash-preview` (快速、高智能、性价比高)
+   - 高级选项: `gemini-3-pro-preview` (最强推理能力)
 
 2. **阿里云百炼 API Key** (用于 TTS 语音合成)
    - 获取地址: https://bailian.console.aliyun.com/?tab=model#/api-key
    - 环境变量: `DASHSCOPE_API_KEY`
 
-> 💡 也支持 OpenAI GPT-4o 或通义千问作为 LLM，详见 `.env.example`
+#### 备选配置
+
+**Anthropic Claude**:
+- 获取地址: https://console.anthropic.com/
+- 环境变量: `ANTHROPIC_API_KEY`
+
+**OpenAI GPT-4o**:
+- 环境变量: `OPENAI_API_KEY`
+
+> 💡 也支持通义千问作为 LLM，详见 `.env.example`
+
+## 🆕 Gemini 3 新特性
+
+### 思考级别控制
+
+通过 `thinking_level` 参数控制模型的推理深度：
+
+```python
+from echuu.live.llm_factory import create_llm_client
+
+# 创建 Gemini 3 客户端
+client = create_llm_client(
+    provider="gemini",
+    model="gemini-3-flash-preview",
+    thinking_level="high"  # 推理深度
+)
+```
+
+**可选级别**:
+- `high` - 最大推理深度（默认，适合复杂任务）
+- `low` - 最小延迟（适合简单对话）
+- `medium` - 平衡（仅 Flash）
+- `minimal` - 最快（仅 Flash）
+
+### 图像生成
+
+使用 Gemini 3 Pro Image 生成高质量图像：
+
+```python
+from echuu.live.gemini_client import GeminiClient
+
+client = GeminiClient(model="gemini-3-pro-image-preview")
+
+# 生成图像
+image_bytes = client.generate_image(
+    prompt="一个温馨的咖啡厅，有柔和的阳光",
+    aspect_ratio="16:9",
+    image_size="4K",
+    use_search=True  # 使用 Google Search 进行有根据的生成
+)
+```
+
+### 视觉理解
+
+支持高分辨率图像分析：
+
+```python
+# 分析图像
+text = client.call_with_image(
+    prompt="描述这张图片的内容",
+    image_data=open("photo.jpg", "rb").read(),
+    media_resolution="media_resolution_high"  # 高质量分析
+)
+```
 
 ## 概述
 
